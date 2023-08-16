@@ -43,22 +43,25 @@ workButton.addEventListener('click', () => {
 bankButton.addEventListener('click', () => {
     if (hasLoan = true) {
         const loanPayment = currentWage * 0.1;
-        currentLoan -= loanPayment;
-
-        if (currentLoan < 0) {
-            currentBankBalance += currentWage;
+        if (loanPayment > currentLoan) {
+            const remainingFunds = loanPayment - currentLoan;
+            currentBankBalance += remainingFunds + currentWage * 0.9;
+            currentWage = 0;
+            currentLoan = loanPayment - remainingFunds;
+            hasLoan = false;
+            updateLoanUI
+        }
+        else if (currentLoan < loanPayment) {
+            currentBankBalance += currentWage - loanPayment;
             currentLoan = 0;
             hasLoan = false;
-        } else {
-            currentBankBalance += currentWage - loanPayment;
-        }
 
+        }
         currentWage = 0;
     } else {
         currentBankBalance += currentWage;
         currentWage = 0;
     }
-
     updateLoanUI();
     updateBankBalanceUI();
     updateWageUI();
@@ -108,16 +111,17 @@ fetch('https://hickory-quilled-actress.glitch.me/computers')
         laptopSelect.appendChild(option);
         //buyNowButton.appendChild(option);
     });
-    const root = "https://hickory-quilled-actress.glitch.me/";
- 
+
     laptopSelect.addEventListener('change', () => {
         const selectedLaptopId = parseInt(laptopSelect.value);
         const selectedLaptop = data.find(laptop => laptop.id === selectedLaptopId);
 
         // Update specs section
         laptopSpecs.innerHTML = selectedLaptop.specs.map(spec => `<li>${spec}</li>`).join('');
-
-        const imagePath = `${root}${selectedLaptop.image}`; // Image Path
+        
+        // Image Path
+        const imagePath = `https://hickory-quilled-actress.glitch.me/${selectedLaptop.image}`;
+        
         // Update info section
         laptopImage.setAttribute("src", imagePath);
         laptopImage.alt = selectedLaptop.title;
@@ -158,6 +162,6 @@ function updateWageUI() {
 }
 
 // Initial UI Updates
-updateBankBalanceUI();
 updateLoanUI();
+updateBankBalanceUI();
 updateWageUI();
