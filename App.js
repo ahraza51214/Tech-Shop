@@ -106,9 +106,10 @@ fetch('https://hickory-quilled-actress.glitch.me/computers')
         option.value = laptop.id;
         option.text = laptop.title;
         laptopSelect.appendChild(option);
+        //buyNowButton.appendChild(option);
     });
     const root = "https://hickory-quilled-actress.glitch.me/";
-
+ 
     laptopSelect.addEventListener('change', () => {
         const selectedLaptopId = parseInt(laptopSelect.value);
         const selectedLaptop = data.find(laptop => laptop.id === selectedLaptopId);
@@ -125,20 +126,24 @@ fetch('https://hickory-quilled-actress.glitch.me/computers')
         laptopPrice.textContent = `Price: ${selectedLaptop.price.toFixed(2)} DKK`;
         buyNowButton.disabled = false;
         });
+
+        // Buy Now Button - LAPTOP Section
+        buyNowButton.addEventListener('click', () => {
+            const selectedLaptopId = parseInt(laptopSelect.value);
+            const selectedLaptop = data.find(laptop => laptop.id === selectedLaptopId);
+            let selectedLaptopPrice = parseFloat(selectedLaptop.price);
+            let laptopName = selectedLaptop.title;
+
+            if (selectedLaptopPrice <= currentBankBalance) {
+                currentBankBalance -= selectedLaptopPrice;
+                updateBankBalanceUI();
+                alert(`Congratulations! You are now the owner of ${laptopName}.`);
+            } else {
+                alert(`You cannot afford the laptop ${laptopName}.`);
+            }
+        });
     });
 
-// Buy Now Button - LAPTOP Section
-buyNowButton.addEventListener('click', () => {
-    let selectedLaptopPrice = parseFloat(laptopPrice);
-    if (selectedLaptopPrice <= currentBankBalance) {
-        currentBankBalance -= selectedLaptopPrice;
-        laptopPrice.textContent = `Price: ${selectedLaptopPrice.toFixed(2)} DKK`;
-        alert(`Congratulations! You are now the owner of the new laptop.`);
-    } else {
-        alert(`You cannot afford the laptop.`);
-    }
-})
-   
 
 // UI Update Functions
 function updateBankBalanceUI() {
