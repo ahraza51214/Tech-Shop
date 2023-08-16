@@ -47,7 +47,7 @@ bankButton.addEventListener('click', () => {
             const remainingFunds = loanPayment - currentLoan;
             currentBankBalance += remainingFunds + currentWage * 0.9;
             currentWage = 0;
-            currentLoan = loanPayment - remainingFunds;
+            currentLoan = 0;
             hasLoan = false;
             updateLoanUI
         }
