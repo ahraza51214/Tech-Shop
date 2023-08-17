@@ -10,10 +10,12 @@ let hasLoan = false;
 // Get a Loan Button - BANK Section
 getLoanButton.addEventListener('click', () => {
     const loanAmount = parseFloat(prompt("Enter loan amount:"));
-    if (loanAmount > currentBankBalance * 2) {
-        alert("Loan amount exceeds double of your bank balance.");
+    if (isNaN(loanAmount)) {
+        alert("Loan amount must be a number. Please try again!");
+    } else if (loanAmount > currentBankBalance * 2) {
+        alert("Loan amount exceeds double of your bank balance. Please try again!");
     } else if (loanAmount < 0) {
-        alert("Loan amount must be positive number.");
+        alert("Loan amount must be positive number. Please try again!");
     } else if (currentLoan > 0) {
         alert("You can't get another loan until you repay the current loan.");
     } 
