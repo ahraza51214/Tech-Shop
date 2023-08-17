@@ -47,17 +47,15 @@ bankButton.addEventListener('click', () => {
             const remainingFunds = loanPayment - currentLoan;
             currentBankBalance += remainingFunds + currentWage * 0.9;
             currentWage = 0;
-            currentLoan = 0;
+            currentLoan -= (loanPayment - remainingFunds);
             hasLoan = false;
-            updateLoanUI
         }
-        else if (currentLoan < loanPayment) {
-            currentBankBalance += currentWage - loanPayment;
-            currentLoan = 0;
+        else if (loanPayment < currentLoan) {
+            currentBankBalance += (currentWage - loanPayment);
+            currentLoan -= (currentLoan - loanPayment);
+            currentWage = 0;
             hasLoan = false;
-
         }
-        currentWage = 0;
     } else {
         currentBankBalance += currentWage;
         currentWage = 0;
@@ -76,14 +74,13 @@ repayLoanButton.addEventListener('click', () => {
             const remainingFunds = loanRepayment - currentLoan;
             currentBankBalance += remainingFunds;
             currentWage = 0;
-            currentLoan = 0;
+            currentLoan -= (loanRepayment - remainingFunds);
             hasLoan = false;
             repayLoanButton.style.display = 'none';
-        } else {
+        } else {ß
             currentLoan -= loanRepayment;
             currentWage = 0;
         }
-
         updateLoanUI();
         updateWageUI();
         updateBankBalanceUI();
@@ -162,6 +159,6 @@ function updateWageUI() {
 }
 
 // Initial UI Updates
-updateLoanUI();
 updateBankBalanceUI();
+updateLoanUI();
 updateWageUI();
