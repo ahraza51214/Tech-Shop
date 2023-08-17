@@ -20,8 +20,8 @@ getLoanButton.addEventListener('click', () => {
     else {
         currentLoan = loanAmount;
         hasLoan = true;
-        updateLoanUI();
     }
+    updateLoanUI();
 });
 
 
@@ -54,6 +54,12 @@ bankButton.addEventListener('click', () => {
             currentBankBalance += (currentWage - loanPayment);
             currentLoan -= (currentLoan - loanPayment);
             currentWage = 0;
+            hasLoan = true;
+        }
+        else if (loanPayment == currentLoan) {
+            currentLoan -= loanPayment;
+            currentBankBalance += currentWage * 0.9;
+            currentWage = 0;
             hasLoan = false;
         }
     } else {
@@ -77,7 +83,7 @@ repayLoanButton.addEventListener('click', () => {
             currentLoan -= (loanRepayment - remainingFunds);
             hasLoan = false;
             repayLoanButton.style.display = 'none';
-        } else {ß
+        } else {
             currentLoan -= loanRepayment;
             currentWage = 0;
         }
